@@ -8,7 +8,7 @@ float Node::calculateUCBValue()
 {
     if (num_visted == 0)
         return 10000 + std::rand() % 100;
-    return ((float)num_wins) / ((float)num_visted) * exploration_coff * std::sqrt(std::log(parent_node->num_visted) / num_visted);
+    return  (((float)num_wins) / ((float)num_visted) ) + exploration_coff * std::sqrt(std::log(parent_node->num_visted) / num_visted);
 }
 Node::Node(Node *parent, Move *m, int t) : parent_node(parent), move(m), num_visted(0), num_wins(0), turn(t), is_root(false) {};
 Node::~Node()
