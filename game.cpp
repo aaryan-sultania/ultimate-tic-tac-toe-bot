@@ -1,3 +1,4 @@
+#include <iostream>
 #include "game.hpp"
 #include <vector>
 
@@ -24,6 +25,9 @@ bool checkBoardForDraw(int mmboard[9]) {
 Move::Move(int mac, int mic) : macro_square(mac), micro_square(mic) {};
 Move::Move(const Move& other) : macro_square(other.macro_square), micro_square(other.micro_square) {};
 
+void Move::movePrint() {
+    std::cout << macro_square << " " << micro_square << std::endl;
+} 
 
 bool Move::operator==(const Move& other) {
     if(macro_square == other.macro_square & micro_square == other.micro_square) return true;

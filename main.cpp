@@ -31,6 +31,12 @@ int main () {
             mcts.runTree();
         }
         Move best_move = Move(mcts.bestMove());
+
+        for (auto it = mcts.root_node->child_nodes.begin(); it != mcts.root_node->child_nodes.end(); ++it)
+        {
+            (*it)->move->movePrint();
+            std::cout << ": " << (*it)->num_wins << " wins out of " << (*it)->num_visted << " simulations (" << ((float) (*it)->num_wins) / ((float) (*it)->num_visted) * 100 << "%)"<< std::endl;
+        }
         std::cout << "My move: " << best_move.macro_square << " " << best_move.micro_square << std::endl;
         mcts.makeMove(&best_move);
 

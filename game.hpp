@@ -12,6 +12,7 @@ public:
     Move(int mac, int mic);
     Move(const Move &other);
     bool operator==(const Move &other);
+    void movePrint();
 };
 
 class State
