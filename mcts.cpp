@@ -76,12 +76,15 @@ void MCTS::runTree()
     while (current_node->is_root == false)
     {
         current_node->num_visted += 1;
-        current_node->num_wins += (result == current_node->turn) ? 1 : 0;
+        current_node->num_wins += (result == current_node->turn) ? 0 : 1;
 
         current_node = current_node->parent_node;
     }
     current_node->num_visted += 1;
     current_node->num_wins += (result == current_node->turn) ? 1 : 0;
+    delete current_state;
+    current_state = nullptr;
+
 }
 
 Move MCTS::bestMove()
@@ -114,5 +117,6 @@ void MCTS::makeMove(Move *m)
     delete root_node;
     root_node = next_root;
     root_node->is_root = true;
+    root_node->parent_node = nullptr;
     root_state->executeMove(root_node->move);
 }
