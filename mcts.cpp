@@ -76,12 +76,12 @@ void MCTS::runTree()
     while (current_node->is_root == false)
     {
         current_node->num_visted += 1;
-        current_node->num_wins += (result == current_node->turn) ? 0 : 1;
+        current_node->num_wins += (result == current_node->parent_node->turn) ? 1 : 0;
 
         current_node = current_node->parent_node;
     }
     current_node->num_visted += 1;
-    current_node->num_wins += (result == current_node->turn) ? 1 : 0;
+    current_node->num_wins += (result == current_node->turn) ? 1 : 0; // This result is irrelevant, since the root node is never a leaf node making a move, but it is needed to keep the code consistent.
     delete current_state;
     current_state = nullptr;
 
@@ -102,6 +102,10 @@ Move MCTS::bestMove()
 
 void MCTS::makeMove(Move *m)
 {
+    if (root_state->game_over)
+    {
+        return; // No moves can be made if the game is over
+    }
     Node *next_root;
     for (auto it = root_node->child_nodes.begin(); it != root_node->child_nodes.end(); ++it)
     {
