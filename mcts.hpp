@@ -35,6 +35,7 @@ class MCTS {
     Move bestMove();
     void makeMove(Move* m);
     MCTS();
+    ~MCTS();
 };
 
 #endif

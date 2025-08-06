@@ -14,7 +14,10 @@ Node::Node(Node *parent, Move *m, int t) : parent_node(parent), move(m), num_vis
 Node::~Node()
 {
     if (!is_root)
+    {
+        for (auto node : child_nodes) delete node;
         child_nodes.clear();
+    }
     delete move;
 }
 
@@ -23,6 +26,15 @@ MCTS::MCTS()
     root_state = new State();
     root_node = new Node(nullptr, nullptr, root_state->turn);
     root_node->is_root = true;
+};
+
+MCTS::~MCTS()
+{
+    delete root_state;
+    root_state = nullptr;
+    for (auto node : root_node->child_nodes) delete node;
+    delete root_node;
+    root_node = nullptr;
 };
 
 void MCTS::runTree()
@@ -47,7 +59,7 @@ void MCTS::runTree()
 
     // Expand
     std::vector<Move *> legal_moves;
-    current_state->createLegalMoves(legal_moves);
+    current_state->createLegalMoves(legal_moves); // Dont delete these moves, they are used in the child nodes
 
     for (auto it = legal_moves.begin(); it != legal_moves.end(); ++it)
     {
@@ -62,10 +74,11 @@ void MCTS::runTree()
     // Roll Out
     while (current_state->game_over == false)
     {
-        std::vector<Move *> random_move_list;
+        std::vector<Move *> random_move_list {};
         current_state->createLegalMoves(random_move_list);
         current_state->executeMove(random_move_list[std::rand() % random_move_list.size()]);
 
+        for (auto m : random_move_list) delete m;
         random_move_list.clear(); // Supposedly calls destructor for elements
     }
 
